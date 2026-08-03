@@ -57,6 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const semesterStart = new Date();
   semesterStart.setMonth(semesterStart.getMonth() - 6);
   const semesterStartValue = semesterStart.toISOString().split("T")[0];
+  document.getElementById("reportSemesterStart").addEventListener("change", appRenderAll);
+  document.getElementById("reportSemesterEnd").addEventListener("change", appRenderAll);
+  document.getElementById("reportSemesterClass").addEventListener("change", appRenderAll);
 
   renderClassSelects();
 
@@ -156,6 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("reportDailyPrintBtn").addEventListener("click", printCurrentReport);
   document.getElementById("reportMonthlyPrintBtn").addEventListener("click", printCurrentReport);
   document.getElementById("reportSemesterPrintBtn").addEventListener("click", printCurrentReport);
+
+  document.getElementById("reportSemesterStart").addEventListener("change", appRenderAll);
+  document.getElementById("reportSemesterEnd").addEventListener("change", appRenderAll);
+  document.getElementById("reportSemesterClass").addEventListener("change", appRenderAll);
 
   setReportMode("daily");
   showPage("dashboard");
