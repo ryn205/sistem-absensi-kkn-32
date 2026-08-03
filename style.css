@@ -472,3 +472,28 @@ button:disabled{
     font-size:24px;
   }
 }
+
+.hero-box{
+  background:#f8fbff;
+  border:1px solid #d9e7ff;
+  border-left:6px solid #1565c0;
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:25px;
+}
+
+.hero-box h2{
+  color:#1565c0;
+  margin-bottom:8px;
+}
+
+.hero-box p{
+  color:#555;
+  line-height:1.6;
+}
+
+.dashboard-range{
+  margin-top:8px;
+  font-weight:bold;
+  color:#2b4c7e;
+}
