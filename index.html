@@ -54,19 +54,6 @@
       <p id="alphaCount">0</p>
     </div>
   </div>
-  <div class="backup-panel">
-    <div>
-      <h2>Backup Data</h2>
-      <p>Unduh atau masukkan kembali seluruh data aplikasi dalam format JSON.</p>
-    </div>
-  
-    <div class="buttons backup-buttons">
-      <button id="exportJsonBtn">Export JSON</button>
-      <button id="importJsonReplaceBtn" class="secondary">Import JSON</button>
-      <button id="importJsonMergeBtn" class="secondary">Gabungkan JSON</button>
-      <input type="file" id="importJsonInput" accept=".json,application/json" hidden>
-    </div>
-  </div>
 </section>
 
     <section id="attendance" class="page" style="display:none;">
@@ -138,7 +125,7 @@
             <label for="studentClassFilter">Filter Kelas</label>
             <select id="studentClassFilter"></select>
           </div>
-
+          
           <div class="info-item">
             <label for="studentSearch">Cari Nama</label>
             <input type="text" id="studentSearch" placeholder="Ketik nama siswa..." />
@@ -174,6 +161,7 @@
           </div>
 
           <div class="buttons">
+            <button id="syncStudentsBtn" class="secondary">Sinkron Siswa</button>
             <button id="saveStudentBtn">Tambah Siswa</button>
             <button id="cancelEditBtn" class="secondary" style="display:none;">Batal</button>
           </div>
@@ -205,8 +193,9 @@
               <input type="text" id="className" placeholder="Contoh: VII-C" />
             </div>
           </div>
-
+                    
           <div class="buttons">
+            <button id="syncClassesBtn" class="secondary">Sinkron Kelas</button>
             <button id="saveClassBtn">Tambah Kelas</button>
             <button id="cancelEditClassBtn" class="secondary" style="display:none;">Batal</button>
           </div>
@@ -223,6 +212,7 @@
           </div>
 
           <div class="report-tabs">
+            <button id="syncAttendanceBtn" class="secondary">Sinkron Absensi</button>
             <button id="reportDailyTab" class="report-tab active" data-report-mode="daily">Harian</button>
             <button id="reportMonthlyTab" class="report-tab" data-report-mode="monthly">Bulanan</button>
             <button id="reportSemesterTab" class="report-tab" data-report-mode="semester">Semester</button>
@@ -463,7 +453,7 @@
   <script src="js/attendance.js"></script>
   <script src="js/student.js"></script>
   <script src="js/report.js"></script>
-  <script src="js/backup.js"></script>
+  <script src="js/sync.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

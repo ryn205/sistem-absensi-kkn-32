@@ -497,26 +497,3 @@ button:disabled{
   font-weight:bold;
   color:#2b4c7e;
 }
-
-.backup-panel{
-  margin-top:25px;
-  background:#f8fbff;
-  border:1px solid #d9e7ff;
-  border-radius:10px;
-  padding:20px;
-  display:flex;
-  justify-content:space-between;
-  gap:20px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-
-.backup-panel h2{
-  color:#1565c0;
-  margin-bottom:6px;
-}
-
-.backup-panel p{
-  color:#666;
-  line-height:1.5;
-}
