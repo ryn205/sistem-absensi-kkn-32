@@ -55,6 +55,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const today = new Date().toISOString().split("T")[0];
   const currentMonth = today.slice(0, 7);
   const semesterStart = new Date();
+  const importJsonBtn = document.getElementById("importJsonBtn");
+  const exportJsonBtn = document.getElementById("exportJsonBtn");
+  const importJsonReplaceBtn = document.getElementById("importJsonReplaceBtn");
+  const importJsonMergeBtn = document.getElementById("importJsonMergeBtn");
+  const importJsonInput = document.getElementById("importJsonInput");
+  
+  let importMode = "replace";
+  
+  if (exportJsonBtn) {
+    exportJsonBtn.addEventListener("click", exportJson);
+  }
+  
+  if (importJsonReplaceBtn && importJsonInput) {
+    importJsonReplaceBtn.addEventListener("click", () => {
+      importMode = "replace";
+      importJsonInput.click();
+    });
+  }
+  
+  if (importJsonMergeBtn && importJsonInput) {
+    importJsonMergeBtn.addEventListener("click", () => {
+      importMode = "merge";
+      importJsonInput.click();
+    });
+  }
+  
+  if (importJsonInput) {
+    importJsonInput.addEventListener("change", () => {
+      const file = importJsonInput.files[0];
+      importJsonFile(file, importMode);
+      importJsonInput.value = "";
+    });
+  }
   semesterStart.setMonth(semesterStart.getMonth() - 6);
   const semesterStartValue = semesterStart.toISOString().split("T")[0];
   document.getElementById("reportSemesterStart").addEventListener("change", appRenderAll);
