@@ -51,50 +51,12 @@ function appRenderAll() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const today = new Date().toISOString().split("T")[0];
   const currentMonth = today.slice(0, 7);
   const semesterStart = new Date();
-  const importJsonBtn = document.getElementById("importJsonBtn");
-  const exportJsonBtn = document.getElementById("exportJsonBtn");
-  const importJsonReplaceBtn = document.getElementById("importJsonReplaceBtn");
-  const importJsonMergeBtn = document.getElementById("importJsonMergeBtn");
-  const importJsonInput = document.getElementById("importJsonInput");
-  
-  let importMode = "replace";
-  
-  if (exportJsonBtn) {
-    exportJsonBtn.addEventListener("click", exportJson);
-  }
-  
-  if (importJsonReplaceBtn && importJsonInput) {
-    importJsonReplaceBtn.addEventListener("click", () => {
-      importMode = "replace";
-      importJsonInput.click();
-    });
-  }
-  
-  if (importJsonMergeBtn && importJsonInput) {
-    importJsonMergeBtn.addEventListener("click", () => {
-      importMode = "merge";
-      importJsonInput.click();
-    });
-  }
-  
-  if (importJsonInput) {
-    importJsonInput.addEventListener("change", () => {
-      const file = importJsonInput.files[0];
-      importJsonFile(file, importMode);
-      importJsonInput.value = "";
-    });
-  }
   semesterStart.setMonth(semesterStart.getMonth() - 6);
   const semesterStartValue = semesterStart.toISOString().split("T")[0];
-  document.getElementById("reportSemesterStart").addEventListener("change", appRenderAll);
-  document.getElementById("reportSemesterEnd").addEventListener("change", appRenderAll);
-  document.getElementById("reportSemesterClass").addEventListener("change", appRenderAll);
-
-  renderClassSelects();
 
   document.getElementById("tanggal").value = today;
   document.getElementById("reportDate").value = today;
@@ -193,9 +155,61 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("reportMonthlyPrintBtn").addEventListener("click", printCurrentReport);
   document.getElementById("reportSemesterPrintBtn").addEventListener("click", printCurrentReport);
 
-  document.getElementById("reportSemesterStart").addEventListener("change", appRenderAll);
-  document.getElementById("reportSemesterEnd").addEventListener("change", appRenderAll);
-  document.getElementById("reportSemesterClass").addEventListener("change", appRenderAll);
+  try {
+    await syncClassesFromSheet();
+    await syncStudentsFromSheet();
+    await syncAttendanceFromSheet();
+  } catch (error) {
+    console.warn("Sinkron dari Spreadsheet gagal, memakai data lokal dulu.", error);
+  }
+
+  const syncStudentsBtn = document.getElementById("syncStudentsBtn");
+
+  if (syncStudentsBtn) {
+    syncStudentsBtn.addEventListener("click", async () => {
+      try {
+        await syncClassesFromSheet();
+        await syncStudentsFromSheet();
+        appRenderAll();
+        alert("Sinkron siswa berhasil.");
+      } catch (error) {
+        console.error(error);
+        alert("Sinkron siswa gagal.");
+      }
+    });
+  }
+
+  const syncClassesBtn = document.getElementById("syncClassesBtn");
+
+  if (syncClassesBtn) {
+    syncClassesBtn.addEventListener("click", async () => {
+      try {
+        await syncClassesFromSheet();
+        renderClassSelects();
+        renderClassTable();
+        appRenderAll();
+        alert("Sinkron kelas berhasil.");
+      } catch (error) {
+        console.warn(error);
+        alert("Sinkron kelas gagal.");
+      }
+    });
+  }
+
+  const syncAttendanceBtn = document.getElementById("syncAttendanceBtn");
+  
+  if (syncAttendanceBtn) {
+    syncAttendanceBtn.addEventListener("click", async () => {
+      try {
+        await syncAttendanceFromSheet();
+        appRenderAll();
+        alert("Sinkron absensi berhasil.");
+      } catch (error) {
+        console.warn(error);
+        alert("Sinkron absensi gagal.\n\n" + error.message);
+      }
+    });
+  }
 
   setReportMode("daily");
   showPage("dashboard");

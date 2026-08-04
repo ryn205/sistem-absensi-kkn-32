@@ -189,3 +189,52 @@ function deleteClass(classId) {
     renderClassTable();
   }
 }
+
+async function syncClassesFromServer() {
+
+  try {
+
+    const classes = await fetchClassesFromServer();
+
+    saveClasses(classes);
+
+    renderClassSelects();
+    renderClassTable();
+
+    console.log("Data kelas berhasil disinkronkan.");
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Gagal mengambil data kelas dari server.");
+
+  }
+
+}
+
+async function addClassOnline(name) {
+
+  const id = generateClassId();
+
+  const result = await postApi({
+
+    action: "addClass",
+
+    id,
+
+    name
+
+  });
+
+  if (!result.success) {
+
+    alert(result.message);
+
+    return;
+
+  }
+
+  await syncClassesFromServer();
+
+}
