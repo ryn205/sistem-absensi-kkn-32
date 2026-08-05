@@ -15,9 +15,9 @@
 
     <nav class="navbar">
       <button class="nav-btn active" data-page="dashboard">Dashboard</button>
-      <button class="nav-btn" data-page="attendance">Absensi</button>
       <button class="nav-btn" data-page="students">Data Siswa</button>
       <button class="nav-btn" data-page="classes">Data Kelas</button>
+      <button class="nav-btn" data-page="attendance">Absensi</button>
       <button class="nav-btn" data-page="report">Laporan</button>
     </nav>
 
@@ -55,68 +55,6 @@
     </div>
   </div>
 </section>
-
-    <section id="attendance" class="page" style="display:none;">
-      <div class="info">
-        <div class="info-item">
-          <label for="tanggal">Tanggal</label>
-          <input type="date" id="tanggal" />
-        </div>
-
-        <div class="info-item">
-          <label for="kelas">Kelas</label>
-          <select id="kelas"></select>
-        </div>
-      </div>
-
-      <div class="table-section">
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Nama Siswa</th>
-              <th>Status Kehadiran</th>
-            </tr>
-          </thead>
-          <tbody id="attendanceTable"></tbody>
-        </table>
-      </div>
-
-      <div class="summary-box">
-        <h2>Ringkasan Absensi</h2>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <span>Total Siswa</span>
-            <strong id="sumTotal">0</strong>
-          </div>
-          <div class="summary-item">
-            <span>Hadir</span>
-            <strong id="sumPresent">0</strong>
-          </div>
-          <div class="summary-item">
-            <span>Izin</span>
-            <strong id="sumIzin">0</strong>
-          </div>
-          <div class="summary-item">
-            <span>Sakit</span>
-            <strong id="sumSakit">0</strong>
-          </div>
-          <div class="summary-item">
-            <span>Alpha</span>
-            <strong id="sumAlpha">0</strong>
-          </div>
-          <div class="summary-item warning">
-            <span>Belum Dipilih</span>
-            <strong id="sumEmpty">0</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="buttons">
-        <button id="saveAttendanceBtn" disabled>Simpan Absensi</button>
-        <button id="resetAttendanceBtn">Reset</button>
-      </div>
-    </section>
 
     <section id="students" class="page" style="display:none;">
       <div class="panel">
@@ -200,6 +138,68 @@
             <button id="cancelEditClassBtn" class="secondary" style="display:none;">Batal</button>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="attendance" class="page" style="display:none;">
+      <div class="info">
+        <div class="info-item">
+          <label for="tanggal">Tanggal</label>
+          <input type="date" id="tanggal" />
+        </div>
+
+        <div class="info-item">
+          <label for="kelas">Kelas</label>
+          <select id="kelas"></select>
+        </div>
+      </div>
+
+      <div class="table-section">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Siswa</th>
+              <th>Status Kehadiran</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceTable"></tbody>
+        </table>
+      </div>
+
+      <div class="summary-box">
+        <h2>Ringkasan Absensi</h2>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span>Total Siswa</span>
+            <strong id="sumTotal">0</strong>
+          </div>
+          <div class="summary-item">
+            <span>Hadir</span>
+            <strong id="sumPresent">0</strong>
+          </div>
+          <div class="summary-item">
+            <span>Izin</span>
+            <strong id="sumIzin">0</strong>
+          </div>
+          <div class="summary-item">
+            <span>Sakit</span>
+            <strong id="sumSakit">0</strong>
+          </div>
+          <div class="summary-item">
+            <span>Alpha</span>
+            <strong id="sumAlpha">0</strong>
+          </div>
+          <div class="summary-item warning">
+            <span>Belum Dipilih</span>
+            <strong id="sumEmpty">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button id="saveAttendanceBtn" disabled>Simpan Absensi</button>
+        <button id="resetAttendanceBtn">Reset</button>
       </div>
     </section>
 
