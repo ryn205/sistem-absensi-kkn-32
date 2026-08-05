@@ -111,3 +111,26 @@ function syncAttendanceFromSheet() {
     return rows;
   });
 }
+
+async function pushAttendanceToSheet(date, classId, records) {
+  const response = await fetch(SHEET_WEB_APP_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action: "saveAttendance",
+      date,
+      classId,
+      records
+    })
+  });
+
+  const text = await response.text();
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { ok: false, message: "Respons tidak valid." };
+  }
+}
