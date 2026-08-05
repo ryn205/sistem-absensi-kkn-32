@@ -80,19 +80,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("tanggal").addEventListener("change", appRenderAll);
   document.getElementById("kelas").addEventListener("change", appRenderAll);
 
-  document.getElementById("saveAttendanceBtn").addEventListener("click", () => {
+  document.getElementById("saveAttendanceBtn").addEventListener("click", async () => {
     const selectedDate = getCurrentDate();
     const selectedClassId = getCurrentClass();
     const payload = getAttendancePayload();
-
+  
     if (payload.some(item => item.status === "")) {
       alert("Masih ada siswa yang belum dipilih statusnya.");
       return;
     }
-
+  
     saveAttendance(selectedDate, selectedClassId, payload);
     appRenderAll();
-    alert("Absensi berhasil disimpan.");
+  
+    try {
+      const result = await pushAttendanceToSheet(selectedDate, selectedClassId, payload);
+      if (!result.ok) {
+        console.warn(result);
+        alert("Absensi tersimpan lokal, tetapi sinkron ke Spreadsheet gagal.");
+        return;
+      }
+      alert("Absensi berhasil disimpan dan disinkronkan.");
+    } catch (error) {
+      console.warn(error);
+      alert("Absensi tersimpan lokal, tetapi sinkron ke Spreadsheet gagal.\n\n" + error.message);
+    }
   });
 
   document.getElementById("resetAttendanceBtn").addEventListener("click", () => {
@@ -206,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert("Sinkron absensi berhasil.");
       } catch (error) {
         console.warn(error);
-        alert("Sinkron absensi gagal.\n\n" + error.message);
+        alert("Sinkron absensi gagal.");
       }
     });
   }
