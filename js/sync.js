@@ -1,4 +1,4 @@
-const SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbws2LatbswzITnM1_wtBGdrDT91j566XjVRWbAoRE9-7gsmcOZ5wvFT00-tcvfF8Kdn/exec";
+const SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwGbITU8bWsAjSrQ8u0_MsFhYC_c_Sw_-BQCEVYL10w6ERLX3-VAA22LnSUJU8Ejvg/exec";
 
 function jsonpRequest(action) {
   return new Promise((resolve, reject) => {
@@ -112,25 +112,51 @@ function syncAttendanceFromSheet() {
   });
 }
 
-async function pushAttendanceToSheet(date, classId, records) {
-  const response = await fetch(SHEET_WEB_APP_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
+function pushAttendanceToSheet(date, classId, records) {
+  return new Promise((resolve, reject) => {
+    const iframeName = `sync_iframe_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
+    const iframe = document.createElement("iframe");
+    iframe.name = iframeName;
+    iframe.style.display = "none";
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = SHEET_WEB_APP_URL;
+    form.target = iframeName;
+    form.style.display = "none";
+
+    const payload = {
       action: "saveAttendance",
       date,
       classId,
       records
-    })
+    };
+
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "payload";
+    input.value = JSON.stringify(payload);
+
+    form.appendChild(input);
+    document.body.appendChild(iframe);
+    document.body.appendChild(form);
+
+    try {
+      form.submit();
+
+      setTimeout(() => {
+        cleanup();
+        resolve({ ok: true, message: "Permintaan sinkron dikirim." });
+      }, 200);
+    } catch (error) {
+      cleanup();
+      reject(error);
+    }
+
+    function cleanup() {
+      if (form.parentNode) form.parentNode.removeChild(form);
+      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    }
   });
-
-  const text = await response.text();
-
-  try {
-    return JSON.parse(text);
-  } catch {
-    return { ok: false, message: "Respons tidak valid." };
-  }
 }

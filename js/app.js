@@ -94,16 +94,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     appRenderAll();
   
     try {
-      const result = await pushAttendanceToSheet(selectedDate, selectedClassId, payload);
-      if (!result.ok) {
-        console.warn(result);
-        alert("Absensi tersimpan lokal, tetapi sinkron ke Spreadsheet gagal.");
-        return;
-      }
-      alert("Absensi berhasil disimpan dan disinkronkan.");
+      await pushAttendanceToSheet(selectedDate, selectedClassId, payload);
+      alert("Absensi tersimpan lokal dan permintaan sinkron sudah dikirim ke Spreadsheet.");
     } catch (error) {
       console.warn(error);
-      alert("Absensi tersimpan lokal, tetapi sinkron ke Spreadsheet gagal.\n\n" + error.message);
+      alert("Absensi tersimpan lokal, tetapi pengiriman ke Spreadsheet gagal.");
     }
   });
 
