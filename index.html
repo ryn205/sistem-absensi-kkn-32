@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Absensi Siswa</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Sistem Absensi Siswa</h1>
+      <p>Program Kerja KKN</p>
+    </header>
+
+    <nav class="navbar">
+      <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+      <button class="nav-btn" data-page="students">Data Siswa</button>
+      <button class="nav-btn" data-page="classes">Data Kelas</button>
+      <button class="nav-btn" data-page="attendance">Absensi</button>
+      <button class="nav-btn" data-page="report">Laporan</button>
+    </nav>
+
+    <section id="dashboard" class="page">
+  <div class="hero-box">
+    <h2>Selamat datang di Sistem Absensi Siswa</h2>
+    <p id="dashboardMessage">
+      Dashboard ini menampilkan ringkasan absensi berdasarkan pilihan Tanggal Awal–Akhir pada Laporan Semester.
+    </p>
+    <p id="dashboardRangeInfo" class="dashboard-range">
+      Periode aktif akan ditampilkan di sini.
+    </p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Total Siswa</h3>
+      <p id="totalStudents">0</p>
+    </div>
+    <div class="card">
+      <h3>Hadir</h3>
+      <p id="presentCount">0</p>
+    </div>
+    <div class="card">
+      <h3>Izin</h3>
+      <p id="izinCount">0</p>
+    </div>
+    <div class="card">
+      <h3>Sakit</h3>
+      <p id="sakitCount">0</p>
+    </div>
+    <div class="card">
+      <h3>Alpha</h3>
+      <p id="alphaCount">0</p>
+    </div>
+  </div>
+</section>
+
+    <section id="students" class="page" style="display:none;">
+      <div class="panel">
+        <div class="panel-top">
+          <div class="info-item">
+            <label for="studentClassFilter">Filter Kelas</label>
+            <select id="studentClassFilter"></select>
+          </div>
+          
+          <div class="info-item">
+            <label for="studentSearch">Cari Nama</label>
+            <input type="text" id="studentSearch" placeholder="Ketik nama siswa..." />
+          </div>
+        </div>
+
+        <div class="table-section">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama Siswa</th>
+                <th>Kelas</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+          </table>
+        </div>
+
+        <div class="form-box">
+          <h2 id="studentFormTitle">Tambah Siswa</h2>
+          <div class="form-grid">
+            <div class="info-item">
+              <label for="studentName">Nama Siswa</label>
+              <input type="text" id="studentName" placeholder="Nama siswa" />
+            </div>
+
+            <div class="info-item">
+              <label for="studentClass">Kelas</label>
+              <select id="studentClass"></select>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button id="syncStudentsBtn" class="secondary">Sinkron Siswa</button>
+            <button id="saveStudentBtn">Tambah Siswa</button>
+            <button id="cancelEditBtn" class="secondary" style="display:none;">Batal</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="classes" class="page" style="display:none;">
+      <div class="panel">
+        <div class="table-section">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama Kelas</th>
+                <th>Jumlah Siswa</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="classTable"></tbody>
+          </table>
+        </div>
+
+        <div class="form-box">
+          <h2 id="classFormTitle">Tambah Kelas</h2>
+          <div class="form-grid">
+            <div class="info-item">
+              <label for="className">Nama Kelas</label>
+              <input type="text" id="className" placeholder="Contoh: VII-C" />
+            </div>
+          </div>
+                    
+          <div class="buttons">
+            <button id="syncClassesBtn" class="secondary">Sinkron Kelas</button>
+            <button id="saveClassBtn">Tambah Kelas</button>
+            <button id="cancelEditClassBtn" class="secondary" style="display:none;">Batal</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="attendance" class="page" style="display:none;">
+      <div class="info">
+        <div class="info-item">
+          <label for="tanggal">Tanggal</label>
+          <input type="date" id="tanggal" />
+        </div>
+
+        <div class="info-item">
+          <label for="kelas">Kelas</label>
+          <select id="kelas"></select>
+        </div>
+      </div>
+
+      <div class="table-section">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Siswa</th>
+              <th>Status Kehadiran</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceTable"></tbody>
+        </table>
+      </div>
+
+      <div class="summary-box">
+        <h2>Ringkasan Absensi</h2>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span>Total Siswa</span>
+            <strong id="sumTotal">0</strong>
+          </div>
+          <div class="summary-item">
+            <span>Hadir</span>
+            <strong id="sumPresent">0</strong>
+          </div>
+          <div class="summary-item">
+            <span>Izin</span>
+            <strong id="sumIzin">0</strong>
+          </div>
+          <div class="summary-item">
+            <span>Sakit</span>
+            <strong id="sumSakit">0</strong>
+          </div>
+          <div class="summary-item">
+            <span>Alpha</span>
+            <strong id="sumAlpha">0</strong>
+          </div>
+          <div class="summary-item warning">
+            <span>Belum Dipilih</span>
+            <strong id="sumEmpty">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button id="saveAttendanceBtn" disabled>Simpan Absensi</button>
+        <button id="resetAttendanceBtn">Reset</button>
+      </div>
+    </section>
+
+    <section id="report" class="page" style="display:none;">
+      <div class="panel report-panel">
+        <div class="report-header">
+          <div>
+            <h2>Laporan</h2>
+            <p>Pilih mode harian, bulanan, atau semester.</p>
+          </div>
+
+          <div class="report-tabs">
+            <button id="syncAttendanceBtn" class="secondary">Sinkron Absensi</button>
+            <button id="reportDailyTab" class="report-tab active" data-report-mode="daily">Harian</button>
+            <button id="reportMonthlyTab" class="report-tab" data-report-mode="monthly">Bulanan</button>
+            <button id="reportSemesterTab" class="report-tab" data-report-mode="semester">Semester</button>
+          </div>
+        </div>
+
+        <section id="reportDailySection" class="report-section active">
+          <div class="report-header-inner">
+            <div>
+              <h3>Laporan Harian</h3>
+              <p id="reportDailyInfo">Pilih tanggal dan kelas untuk melihat rekap absensi.</p>
+            </div>
+
+            <div class="buttons report-buttons">
+              <button id="reportDailyLoadBtn">Tampilkan</button>
+              <button id="reportDailyPrintBtn" class="secondary">Cetak</button>
+            </div>
+          </div>
+
+          <div class="info report-controls">
+            <div class="info-item">
+              <label for="reportDate">Tanggal</label>
+              <input type="date" id="reportDate" />
+            </div>
+
+            <div class="info-item">
+              <label for="reportClass">Kelas</label>
+              <select id="reportClass"></select>
+            </div>
+          </div>
+
+          <div class="summary-box">
+            <h2>Ringkasan Laporan Harian</h2>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Total Siswa</span>
+                <strong id="reportTotal">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Hadir</span>
+                <strong id="reportPresent">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Izin</span>
+                <strong id="reportIzin">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Sakit</span>
+                <strong id="reportSakit">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Alpha</span>
+                <strong id="reportAlpha">0</strong>
+              </div>
+              <div class="summary-item warning">
+                <span>Belum Diisi</span>
+                <strong id="reportEmpty">0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-section" style="margin-top:20px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Siswa</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="reportDailyTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="reportMonthlySection" class="report-section" style="display:none;">
+          <div class="report-header-inner">
+            <div>
+              <h3>Laporan Bulanan</h3>
+              <p id="reportMonthlyInfo">Pilih bulan dan kelas untuk melihat rekap per hari.</p>
+            </div>
+
+            <div class="buttons report-buttons">
+              <button id="reportMonthlyLoadBtn">Tampilkan</button>
+              <button id="reportMonthlyPrintBtn" class="secondary">Cetak</button>
+            </div>
+          </div>
+
+          <div class="info report-controls">
+            <div class="info-item">
+              <label for="reportMonth">Bulan</label>
+              <input type="month" id="reportMonth" />
+            </div>
+
+            <div class="info-item">
+              <label for="reportClassMonthly">Kelas</label>
+              <select id="reportClassMonthly"></select>
+            </div>
+          </div>
+
+          <div class="summary-box">
+            <h2>Ringkasan Laporan Bulanan</h2>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Total Hari</span>
+                <strong id="reportMonthDays">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Hadir</span>
+                <strong id="reportMonthPresent">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Izin</span>
+                <strong id="reportMonthIzin">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Sakit</span>
+                <strong id="reportMonthSakit">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Alpha</span>
+                <strong id="reportMonthAlpha">0</strong>
+              </div>
+              <div class="summary-item warning">
+                <span>Belum Diisi</span>
+                <strong id="reportMonthEmpty">0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-section" style="margin-top:20px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Kelas</th>
+                  <th>Hadir</th>
+                  <th>Izin</th>
+                  <th>Sakit</th>
+                  <th>Alpha</th>
+                  <th>Belum Diisi</th>
+                </tr>
+              </thead>
+              <tbody id="reportMonthlyTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="reportSemesterSection" class="report-section" style="display:none;">
+          <div class="report-header-inner">
+            <div>
+              <h3>Laporan Semester</h3>
+              <p id="reportSemesterInfo">Pilih rentang tanggal dan kelas untuk melihat rekap per siswa.</p>
+            </div>
+
+            <div class="buttons report-buttons">
+              <button id="reportSemesterLoadBtn">Tampilkan</button>
+              <button id="reportSemesterPrintBtn" class="secondary">Cetak</button>
+            </div>
+          </div>
+
+          <div class="info report-controls">
+            <div class="info-item">
+              <label for="reportSemesterStart">Tanggal Mulai</label>
+              <input type="date" id="reportSemesterStart" />
+            </div>
+
+            <div class="info-item">
+              <label for="reportSemesterEnd">Tanggal Akhir</label>
+              <input type="date" id="reportSemesterEnd" />
+            </div>
+
+            <div class="info-item">
+              <label for="reportSemesterClass">Kelas</label>
+              <select id="reportSemesterClass"></select>
+            </div>
+          </div>
+
+          <div class="summary-box">
+            <h2>Ringkasan Laporan Semester</h2>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Total Siswa</span>
+                <strong id="reportSemesterStudents">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Total Sesi</span>
+                <strong id="reportSemesterSessions">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Hadir</span>
+                <strong id="reportSemesterPresent">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Izin</span>
+                <strong id="reportSemesterIzin">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Sakit</span>
+                <strong id="reportSemesterSakit">0</strong>
+              </div>
+              <div class="summary-item warning">
+                <span>Alpha</span>
+                <strong id="reportSemesterAlpha">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Kehadiran</span>
+                <strong id="reportSemesterRate">0%</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-section" style="margin-top:20px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Siswa</th>
+                  <th>Kelas</th>
+                  <th>Hadir</th>
+                  <th>Izin</th>
+                  <th>Sakit</th>
+                  <th>Alpha</th>
+                  <th>% Kehadiran</th>
+                </tr>
+              </thead>
+              <tbody id="reportSemesterTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/class.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/attendance.js"></script>
+  <script src="js/student.js"></script>
+  <script src="js/report.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
