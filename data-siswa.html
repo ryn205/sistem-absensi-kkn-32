@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Siswa | Sistem Absensi Digital</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f3f6fb;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .topbar p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .logout-btn {
+      border: none;
+      background: #dc2626;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .logout-btn:hover {
+      background: #b91c1c;
+    }
+
+    .btn {
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f9fafb;
+      color: #374151;
+    }
+
+    .message {
+      margin-top: 14px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .message.success {
+      color: #15803d;
+    }
+
+    .message.error {
+      color: #b91c1c;
+    }
+
+    .empty {
+      padding: 18px;
+      background: #fafafa;
+      border: 1px dashed #d1d5db;
+      border-radius: 12px;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .mini-note {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .inline-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #eef2ff;
+      color: #3730a3;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Data Siswa</h1>
+      <p id="teacherInfo">Memuat data guru...</p>
+    </div>
+
+    <div class="topbar-actions">
+      <a href="dashboard.html" class="btn btn-secondary">Dashboard</a>
+      <a href="data-kelas.html" class="btn btn-secondary">Data Kelas</a>
+      <a href="#" class="btn btn-primary">Data Siswa</a>
+      <a href="attendance.html" class="btn btn-secondary">Input Absensi</a>
+      <a href="rekap.html" class="btn btn-secondary">Rekap Absensi</a>
+      <button class="btn logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Form Data Siswa</h2>
+      <p>Tambahkan, ubah, atau hapus data siswa berdasarkan kelas.</p>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="studentName">Nama Siswa</label>
+          <input type="text" id="studentName" placeholder="Masukkan nama siswa" />
+        </div>
+
+        <div class="form-group">
+          <label for="studentClass">Kelas</label>
+          <select id="studentClass"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="studentNis">NIS</label>
+          <input type="text" id="studentNis" placeholder="Masukkan NIS" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="saveStudentBtn">Simpan Data</button>
+        <button class="btn btn-secondary" id="resetFormBtn">Reset</button>
+      </div>
+
+      <div id="message" class="message"></div>
+      <div class="mini-note">
+        Data disimpan di <strong>localStorage</strong> dengan key <strong>studentsData</strong>.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Daftar Siswa</h2>
+      <p>Gunakan tombol edit untuk memperbarui data yang sudah ada.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Siswa</th>
+              <th>Kelas</th>
+              <th>NIS</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+
+      <div id="emptyState" class="empty" style="display:none;">
+        Belum ada data siswa tersimpan.
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="data-siswa.js"></script>
+</body>
+</html>

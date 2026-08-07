@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input Absensi Siswa | Sistem Absensi Digital</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f3f6fb;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .topbar p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .logout-btn {
+      border: none;
+      background: #dc2626;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .logout-btn:hover {
+      background: #b91c1c;
+    }
+
+    .btn {
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .student-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .student-table th,
+    .student-table td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    .student-table th {
+      background: #f9fafb;
+      color: #374151;
+    }
+
+    .status-select {
+      min-width: 130px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .message {
+      margin-top: 14px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .message.success {
+      color: #15803d;
+    }
+
+    .message.error {
+      color: #b91c1c;
+    }
+
+    .saved-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .saved-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #fafafa;
+    }
+
+    .saved-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .hadir { background: #dcfce7; color: #166534; }
+    .izin { background: #dbeafe; color: #1d4ed8; }
+    .sakit { background: #fef3c7; color: #92400e; }
+    .alfa { background: #fee2e2; color: #991b1b; }
+
+    .note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    @media (max-width: 640px) {
+      .student-table th,
+      .student-table td {
+        padding: 10px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Input Absensi Siswa</h1>
+      <p id="teacherInfo">Memuat data guru...</p>
+    </div>
+
+    <div class="topbar-actions">
+      <a href="dashboard.html" class="btn btn-secondary">Dashboard</a>
+      <a href="data-kelas.html" class="btn btn-secondary">Data Kelas</a>
+      <a href="data-siswa.html" class="btn btn-secondary">Data Siswa</a>
+      <a href="#" class="btn btn-primary">Input Absensi</a>
+      <a href="rekap.html" class="btn btn-secondary">Rekap Absensi</a>
+      <button class="btn logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Form Absensi Harian</h2>
+      <p>Pilih kelas dan tanggal, lalu isi status kehadiran setiap siswa.</p>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="className">Kelas</label>
+          <select id="className">
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="attendanceDate">Tanggal</label>
+          <input type="date" id="attendanceDate" />
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="student-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Siswa</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="saveBtn">Simpan Absensi</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset Pilihan</button>
+      </div>
+
+      <div id="message" class="message"></div>
+      <div class="note">
+        Data disimpan di browser menggunakan <strong>localStorage</strong>. Versi ini cocok untuk prototipe awal.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Riwayat Absensi Tersimpan</h2>
+      <p>Data terbaru akan muncul di bawah ini.</p>
+      <div id="savedList" class="saved-list"></div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="attendance.js"></script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Sistem Absensi Digital Siswa</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f3f6fb;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .topbar p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .logout-btn {
+      border: none;
+      background: #dc2626;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .logout-btn:hover {
+      background: #b91c1c;
+    }
+
+    .btn {
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .container {
+      padding: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .welcome {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .welcome h2 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .card h3 {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .card .value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    .section {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .section h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .section p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .action-btn {
+      text-decoration: none;
+      background: #2563eb;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .action-btn.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .action-btn.secondary:hover {
+      background: #d1d5db;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+    }
+
+    th {
+      color: #374151;
+      background: #f9fafb;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hadir { background: #dcfce7; color: #166534; }
+    .izin { background: #dbeafe; color: #1d4ed8; }
+    .sakit { background: #fef3c7; color: #92400e; }
+    .alfa { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Dashboard Absensi</h1>
+      <p id="teacherInfo">Memuat data guru...</p>
+    </div>
+
+    <div class="topbar-actions">
+      <a href="#" class="btn btn-primary">Dashboard</a>
+      <a href="data-kelas.html" class="btn btn-secondary">Data Kelas</a>
+      <a href="data-siswa.html" class="btn btn-secondary">Data Siswa</a>
+      <a href="attendance.html" class="btn btn-secondary">Input Absensi</a>
+      <a href="rekap.html" class="btn btn-secondary">Rekap Absensi</a>
+      <button class="btn logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <h2>Selamat datang di sistem absensi digital siswa</h2>
+      <p>
+        Dari halaman ini guru dapat melihat ringkasan absensi, membuka data siswa,
+        mengisi absensi harian, dan melihat rekap absensi.
+      </p>
+    </section>
+
+    <section class="cards">
+
+        <div class="card">
+            <h3>Total Siswa</h3>
+            <div class="value" id="totalStudents">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Kelas Aktif</h3>
+            <div class="value" id="totalClasses">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Hadir Hari Ini</h3>
+            <div class="value" id="todayPresent">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Izin / Sakit</h3>
+            <div class="value" id="todayExcused">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Alfa</h3>
+            <div class="value" id="todayAlfa">0</div>
+        </div>
+
+    </section>
+
+    <section class="section">
+      <h3>Riwayat Absensi Terbaru</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nama Siswa</th>
+              <th>Kelas</th>
+              <th>Status</th>
+              <th>Tanggal</th>
+            </tr>
+          </thead>
+          <tbody id="recentAttendanceBody">
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
