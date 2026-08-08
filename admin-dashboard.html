@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin | Sistem Absensi Digital</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #fbf3f3; color: #1f2937; min-height: 100vh; }
+    .topbar {
+      background: #fff; border-bottom: 1px solid #e5e7eb; padding: 18px 24px;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .topbar h1 { font-size: 20px; margin-bottom: 4px; }
+    .topbar p { font-size: 14px; color: #6b7280; }
+    .topbar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      border: none; text-decoration: none; display: inline-block; padding: 10px 16px;
+      border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px;
+    }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-secondary { background: #e5e7eb; color: #111827; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary:hover { background: #d1d5db; }
+    .btn-danger:hover { background: #b91c1c; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .welcome, .card {
+      background: #fff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.06);
+      padding: 24px; margin-bottom: 24px;
+    }
+    .welcome h2, .card h2 { font-size: 20px; margin-bottom: 8px; }
+    .welcome p, .card p { color: #6b7280; line-height: 1.6; }
+    .cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff; border-radius: 16px; padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    }
+    .stat-card h3 { font-size: 14px; color: #6b7280; margin-bottom: 10px; font-weight: 600; }
+    .stat-card .value { font-size: 28px; font-weight: 800; color: #111827; }
+    .actions {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px; margin-top: 16px;
+    }
+    .action-btn {
+      text-decoration: none; background: #2563eb; color: #fff; padding: 12px 16px;
+      border-radius: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .action-btn:hover { background: #1d4ed8; }
+    .action-btn.secondary { background: #e5e7eb; color: #111827; }
+    .action-btn.secondary:hover { background: #d1d5db; }
+    .table-wrap { overflow-x: auto; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; min-width: 860px; }
+    th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+    th { background: #f9fafb; color: #374151; }
+    .status {
+      display: inline-block; padding: 6px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 700; background: #eef2ff; color: #3730a3;
+    }
+    .section-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .section-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Dashboard Admin</h1>
+      <p id="teacherInfo">Memuat data admin...</p>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <h2>Ringkasan Sistem</h2>
+      <p>Halaman ini menampilkan gambaran umum seluruh data: akun guru, kelas, siswa, dan absensi.</p>
+    </section>
+
+    <section class="cards">
+      <div class="stat-card">
+        <h3>Total Guru</h3>
+        <div class="value" id="totalTeachers">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Total Kelas</h3>
+        <div class="value" id="totalClasses">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Total Siswa</h3>
+        <div class="value" id="totalStudents">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Rekap Absensi</h3>
+        <div class="value" id="totalAttendance">0</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Aksi Cepat</h2>
+      <div class="actions">
+        <a href="admin.html" class="action-btn">Kelola Akun Guru</a>
+        <a href="data-kelas.html" class="action-btn secondary">Data Kelas</a>
+        <a href="data-siswa.html" class="action-btn secondary">Data Siswa</a>
+        <a href="rekap.html" class="action-btn secondary">Rekap Absensi</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <section class="card">
+        <h2>Daftar Guru</h2>
+        <p>Akun guru yang tersimpan saat ini.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Username</th>
+                <th>Kelas</th>
+              </tr>
+            </thead>
+            <tbody id="teacherList"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Daftar Kelas</h2>
+        <p>Kelas yang tersimpan saat ini.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Kelas</th>
+                <th>Wali Kelas</th>
+                <th>Jumlah Siswa</th>
+              </tr>
+            </thead>
+            <tbody id="classList"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="card">
+      <h2>Absensi Terbaru</h2>
+      <p>Ringkasan data absensi terakhir yang tersimpan.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Kelas</th>
+              <th>Guru</th>
+              <th>Total Siswa</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceList"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="admin-dashboard.js"></script>
+</body>
+</html>

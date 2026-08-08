@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelola Akun Guru | Sistem Absensi Digital</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #fbf3f3; color: #1f2937; min-height: 100vh; }
+    .topbar {
+      background: #fff; border-bottom: 1px solid #e5e7eb; padding: 18px 24px;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .topbar h1 { font-size: 20px; margin-bottom: 4px; }
+    .topbar p { font-size: 14px; color: #6b7280; }
+    .topbar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      border: none; text-decoration: none; display: inline-block; padding: 10px 16px;
+      border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px;
+    }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-secondary { background: #e5e7eb; color: #111827; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary:hover { background: #d1d5db; }
+    .btn-danger:hover { background: #b91c1c; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .card {
+      background: #fff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.06);
+      padding: 24px; margin-bottom: 24px;
+    }
+    .card h2 { font-size: 20px; margin-bottom: 8px; }
+    .card p { color: #6b7280; line-height: 1.6; }
+    .form-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px; margin-top: 20px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    label { font-size: 14px; font-weight: 700; color: #374151; }
+    input, select {
+      width: 100%; padding: 12px 14px; border: 1px solid #d1d5db; border-radius: 10px;
+      font-size: 14px; outline: none; background: #fff;
+    }
+    input:focus, select:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    .table-wrap { overflow-x: auto; margin-top: 18px; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+    th { background: #f9fafb; color: #374151; }
+    .message { margin-top: 14px; font-size: 14px; font-weight: 700; }
+    .message.success { color: #15803d; }
+    .message.error { color: #b91c1c; }
+    .empty {
+      padding: 18px; background: #fafafa; border: 1px dashed #d1d5db; border-radius: 12px;
+      color: #6b7280; text-align: center; margin-top: 14px;
+    }
+    .inline-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .status-badge {
+      display: inline-block; padding: 6px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 700; background: #eef2ff; color: #3730a3;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Kelola Akun Guru</h1>
+      <p id="teacherInfo">Memuat data admin...</p>
+    </div>
+    <div class="topbar-actions">
+      <a href="dashboard.html" class="btn btn-secondary">Kembali ke Dashboard</a>
+      <button class="btn btn-primary" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Form Akun Guru</h2>
+      <p>Admin dapat menambah, mengubah, dan menghapus akun guru.</p>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="teacherName">Nama Guru</label>
+          <input type="text" id="teacherName" placeholder="Masukkan nama guru" />
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Masukkan username" />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Kosongkan saat edit jika tidak diubah" />
+        </div>
+
+        <div class="form-group">
+          <label for="allowedClass">Kelas Tugas</label>
+          <select id="allowedClass"></select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="saveBtn">Simpan Guru</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div id="message" class="message"></div>
+    </section>
+
+    <section class="card">
+      <h2>Daftar Guru</h2>
+      <p>Akad admin tidak bisa dihapus dari halaman ini.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama</th>
+              <th>Username</th>
+              <th>Kelas</th>
+              <th>Role</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="teacherTableBody"></tbody>
+        </table>
+      </div>
+
+      <div id="emptyState" class="empty" style="display:none;">
+        Belum ada akun guru.
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

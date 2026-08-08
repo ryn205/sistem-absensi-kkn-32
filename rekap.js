@@ -227,9 +227,6 @@ document.addEventListener("DOMContentLoaded", function () {
     refreshView();
   });
 
-  dateInput1.addEventListener("change", refreshView);
-  dateInput2.addEventListener("change", refreshView);
-
   applyFilterBtn.addEventListener("click", refreshView);
 
   resetFilterBtn.addEventListener("click", function () {

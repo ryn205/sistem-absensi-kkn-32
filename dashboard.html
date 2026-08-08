@@ -13,13 +13,13 @@
     }
 
     body {
-      background: #f3f6fb;
+      background: #fbf3f3;
       color: #1f2937;
       min-height: 100vh;
     }
 
     .topbar {
-      background: #ffffff;
+      background: #fff;
       border-bottom: 1px solid #e5e7eb;
       padding: 18px 24px;
       display: flex;
@@ -218,6 +218,67 @@
     .izin { background: #dbeafe; color: #1d4ed8; }
     .sakit { background: #fef3c7; color: #92400e; }
     .alfa { background: #fee2e2; color: #991b1b; }
+  
+    .backup-box {
+      margin-top: 24px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e5e7eb;
+    }
+
+    .backup-box h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .backup-box p {
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .backup-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .backup-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      color: #111827;
+      cursor: pointer;
+    }
+
+    .backup-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .backup-btn.primary {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
+
+    .backup-btn.primary:hover {
+      background: #1d4ed8;
+    }
+
+    .backup-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #6b7280;
+    }
   </style>
 </head>
 <body>
@@ -228,11 +289,6 @@
     </div>
 
     <div class="topbar-actions">
-      <a href="#" class="btn btn-primary">Dashboard</a>
-      <a href="data-kelas.html" class="btn btn-secondary">Data Kelas</a>
-      <a href="data-siswa.html" class="btn btn-secondary">Data Siswa</a>
-      <a href="attendance.html" class="btn btn-secondary">Input Absensi</a>
-      <a href="rekap.html" class="btn btn-secondary">Rekap Absensi</a>
       <button class="btn logout-btn" id="logoutBtn">Logout</button>
     </div>
   </header>
@@ -246,6 +302,16 @@
       </p>
     </section>
 
+    <section class="section">
+      <h3>Tombol Data dan Absensi</h3>
+      <div class="actions">
+      <a href="data-kelas.html" class="action-btn btn-primary">Data Kelas</a>
+      <a href="data-siswa.html" class="action-btn btn-primary">Data Siswa</a>
+      <a href="attendance.html" class="action-btn btn-primary">Input Absensi</a>
+      <a href="rekap.html" class="action-btn btn-primary">Rekap Absensi</a>
+      </div>
+    </section>
+
     <section class="cards">
 
         <div class="card">
@@ -255,7 +321,7 @@
 
         <div class="card">
             <h3>Kelas Aktif</h3>
-            <div class="value" id="totalClasses">0</div>
+            <div class="value" id="activeClasses">0</div>
         </div>
 
         <div class="card">
@@ -265,7 +331,7 @@
 
         <div class="card">
             <h3>Izin / Sakit</h3>
-            <div class="value" id="todayExcused">0</div>
+            <div class="value" id="todayExcusedSick">0</div>
         </div>
 
         <div class="card">
@@ -273,6 +339,23 @@
             <div class="value" id="todayAlfa">0</div>
         </div>
 
+    </section>
+
+    <section class="section backup-box">
+      <h3>Backup Data</h3>
+      <p>
+        Simpan data siswa, data kelas, dan rekap absensi ke file JSON, lalu pulihkan kembali jika diperlukan.
+      </p>
+
+      <div class="backup-actions">
+        <a href="#" class="backup-btn primary" id="backupBtn">Unduh Backup</a>
+        <a href="#" class="backup-btn" id="restoreBtn">Pulihkan Backup</a>
+        <input type="file" id="backupFileInput" accept="application/json" style="display:none;" />
+      </div>
+
+      <div class="backup-note">
+        Data backup berasal dari penyimpanan browser dan cocok untuk pemindahan manual antar perangkat.
+      </div>
     </section>
 
     <section class="section">
@@ -287,7 +370,7 @@
               <th>Tanggal</th>
             </tr>
           </thead>
-          <tbody id="recentAttendanceBody">
+          <tbody id="updateDashboardStats">
           </tbody>
         </table>
       </div>
@@ -296,5 +379,6 @@
 
   <script src="auth.js"></script>
   <script src="dashboard.js"></script>
+  <script src="backup.js"></script>
 </body>
 </html>
